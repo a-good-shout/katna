@@ -39,7 +39,7 @@ class Video(object):
     :type object: class:`Object`
     """
 
-    def __init__(self, autoflip_build_path=None, autoflip_model_path=None):
+    def __init__(self, autoflip_build_path=None, autoflip_model_path=None, temp_folder=None):
         # Find out location of ffmpeg binary on system
         helper._set_ffmpeg_binary_path()
         # If the duration of the clipped video is less than **min_video_duration**
@@ -59,7 +59,12 @@ class Video(object):
             self.mediapipe_autoflip = None
 
         # Folder to save the videos after clipping
-        self.temp_folder = os.path.abspath(os.path.join("clipped"))
+        if temp_folder:
+            clipped_folder = f"{temp_folder}/clipped"
+        else:
+            clipped_folder = os.path.abspath(os.path.join("clipped"))
+        
+        self.temp_folder = clipped_folder
         if not os.path.isdir(self.temp_folder):
             os.mkdir(self.temp_folder)
 
